@@ -1,45 +1,73 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-02-25 04:56:19.469404",
+ "autoname": "format:WTH-{####}",
+ "creation": "2024-02-27 06:11:19.885179",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "customer",
-  "date",
+  "customer_name",
+  "customer_batch",
+  "column_break_oysw3",
   "amount",
-  "amended_from",
+  "posting_date",
+  "posting_time",
   "amended_from"
  ],
  "fields": [
   {
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_filter": 1,
    "label": "Customer",
-   "options": "Customer"
+   "options": "Customer",
+   "reqd": 1
   },
   {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Date",
-   "options": "Today"
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.custom_batch",
+   "fieldname": "customer_batch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_oysw3",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "amount",
    "fieldtype": "Currency",
-   "label": "Amount"
+   "in_list_view": 1,
+   "label": "Amount",
+   "options": "Company:company:default_currency",
+   "reqd": 1
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Deposit",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "options": "Today"
+  },
+  {
+   "default": "Now",
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time"
   },
   {
    "fieldname": "amended_from",
@@ -55,10 +83,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-25 04:56:19.469404",
+ "modified": "2024-02-27 06:55:48.000370",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Withdraw",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

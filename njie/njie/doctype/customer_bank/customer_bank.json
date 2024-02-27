@@ -1,7 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
- "autoname": "field:phone_number",
+ "autoname": "autoincrement",
  "creation": "2024-02-25 04:21:28.564817",
  "default_view": "List",
  "doctype": "DocType",
@@ -13,6 +12,7 @@
   "column_break_knux2",
   "phone_number",
   "balance",
+  "badge",
   "section_break_mqqgz",
   "transaction"
  ],
@@ -51,15 +51,24 @@
   {
    "fieldname": "section_break_mqqgz",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "badge",
+   "fieldtype": "Select",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Badge",
+   "options": "Batch 1 - Serekunda\nBatch 2 - Serekunda\nBatch 3 - Serekunda"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-25 04:27:10.771768",
+ "modified": "2024-02-25 16:59:27.466148",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Customer Bank",
- "naming_rule": "By fieldname",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [
   {
