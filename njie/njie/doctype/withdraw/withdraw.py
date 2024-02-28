@@ -12,10 +12,11 @@ class Withdraw(Document):
     def on_submit(self):
         self.update_customer_balance()
         self.add_withdraw_transaction()
+        frappe.msgprint('Withdrawal added successfully')
+        
     def update_customer_balance(self):
             balance = float(frappe.db.get_value('Customer', self.customer, 'custom_balance')) - self.amount
             frappe.db.set_value('Customer', self.customer, 'custom_balance', balance)
-            frappe.msgprint('Withdrawal added successfully')
     
 	#add deposit transacion to customer transactions
     def add_withdraw_transaction(self):
@@ -27,3 +28,11 @@ class Withdraw(Document):
 			 'amount': self.amount,
 		 })
          doc.save()
+
+         frappe.get_doc({
+            'doctype': 'Transactions',
+            'date': self.posting_date,
+            'transaction_type': 'Withdrawal',
+            'amount': self.amount,
+            'customer_name': self.customer_name
+        }).insert()

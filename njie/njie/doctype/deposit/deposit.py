@@ -8,11 +8,12 @@ class Deposit(Document):
     def on_submit(self):
         self.update_customer_balance()
         self.add_deposit_transaction()
+        frappe.msgprint('Deposit added successfully')
+
 	#update customer balance
     def update_customer_balance(self):
             balance = float(frappe.db.get_value('Customer', self.customer, 'custom_balance')) + self.amount
             frappe.db.set_value('Customer', self.customer, 'custom_balance', balance)
-            frappe.msgprint('Deposit added successfully')
     
 	#add deposit transacion to customer transactions
     def add_deposit_transaction(self):
@@ -24,4 +25,13 @@ class Deposit(Document):
 			 'amount': self.amount,
 		 })
          doc.save()
-	
+
+        #add to transactions
+         frappe.get_doc({
+            'doctype': 'Transactions',
+            'date': self.posting_date,
+            'transaction_type': 'Deposit',
+            'amount': self.amount,
+            'customer_name': self.customer_name
+        }).insert()
+         

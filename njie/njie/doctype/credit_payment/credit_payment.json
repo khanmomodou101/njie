@@ -1,8 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:WTH-{####}",
- "creation": "2024-02-27 06:11:19.885179",
+ "autoname": "format:CRP-{####}",
+ "creation": "2024-02-28 09:25:12.327669",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -11,6 +11,7 @@
   "customer",
   "customer_name",
   "customer_batch",
+  "credit_value",
   "column_break_oysw3",
   "amount",
   "posting_date",
@@ -22,6 +23,7 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "in_filter": 1,
+   "in_standard_filter": 1,
    "label": "Customer",
    "options": "Customer",
    "reqd": 1
@@ -30,6 +32,7 @@
    "fetch_from": "customer.customer_name",
    "fieldname": "customer_name",
    "fieldtype": "Data",
+   "in_filter": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Customer Name",
@@ -39,9 +42,17 @@
    "fetch_from": "customer.custom_batch",
    "fieldname": "customer_batch",
    "fieldtype": "Data",
-   "in_list_view": 1,
+   "in_filter": 1,
    "in_standard_filter": 1,
    "label": "Customer Batch",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.custom_credit_value",
+   "fieldname": "credit_value",
+   "fieldtype": "Currency",
+   "label": "Credit Value",
+   "options": "Company:company:default_currency",
    "read_only": 1
   },
   {
@@ -51,7 +62,9 @@
   {
    "fieldname": "amount",
    "fieldtype": "Currency",
+   "in_filter": 1,
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Amount",
    "options": "Company:company:default_currency",
    "reqd": 1
@@ -74,7 +87,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Withdraw",
+   "options": "Credit Payment",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -83,10 +96,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-27 15:38:18.158301",
+ "modified": "2024-02-28 09:25:57.572338",
  "modified_by": "Administrator",
  "module": "Njie",
- "name": "Withdraw",
+ "name": "Credit Payment",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [

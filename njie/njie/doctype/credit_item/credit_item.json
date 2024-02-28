@@ -1,42 +1,36 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-02-25 04:24:08.122866",
+ "creation": "2024-02-28 08:45:28.106231",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "date",
-  "transaction_type",
-  "amount"
+  "item",
+  "price"
  ],
  "fields": [
   {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Date"
-  },
-  {
-   "fieldname": "transaction_type",
+   "fieldname": "item",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Transaction Type"
+   "label": "Item"
   },
   {
-   "fieldname": "amount",
+   "fieldname": "price",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Amount"
+   "label": "Price",
+   "options": "Company:company:default_currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-02-28 09:22:51.839631",
+ "modified": "2024-02-28 08:50:11.050774",
  "modified_by": "Administrator",
  "module": "Njie",
- "name": "Customer Transactions",
+ "name": "Credit Item",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",

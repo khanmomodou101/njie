@@ -1,8 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:WTH-{####}",
- "creation": "2024-02-27 06:11:19.885179",
+ "autoname": "format:CR-{####}",
+ "creation": "2024-02-28 08:21:10.836760",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -12,9 +12,13 @@
   "customer_name",
   "customer_batch",
   "column_break_oysw3",
-  "amount",
   "posting_date",
   "posting_time",
+  "section_break_fcbdy",
+  "credit_items",
+  "section_break_yldoj",
+  "column_break_boj52",
+  "total_amount",
   "amended_from"
  ],
  "fields": [
@@ -22,6 +26,7 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "in_filter": 1,
+   "in_standard_filter": 1,
    "label": "Customer",
    "options": "Customer",
    "reqd": 1
@@ -30,6 +35,7 @@
    "fetch_from": "customer.customer_name",
    "fieldname": "customer_name",
    "fieldtype": "Data",
+   "in_filter": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Customer Name",
@@ -39,7 +45,7 @@
    "fetch_from": "customer.custom_batch",
    "fieldname": "customer_batch",
    "fieldtype": "Data",
-   "in_list_view": 1,
+   "in_filter": 1,
    "in_standard_filter": 1,
    "label": "Customer Batch",
    "read_only": 1
@@ -47,14 +53,6 @@
   {
    "fieldname": "column_break_oysw3",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "options": "Company:company:default_currency",
-   "reqd": 1
   },
   {
    "default": "Today",
@@ -74,19 +72,43 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Withdraw",
+   "options": "Customer Credit",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "section_break_fcbdy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "credit_items",
+   "fieldtype": "Table",
+   "label": "Credit Items",
+   "options": "Credit Item"
+  },
+  {
+   "fieldname": "column_break_boj52",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "section_break_yldoj",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-27 15:38:18.158301",
+ "modified": "2024-02-28 08:49:11.266371",
  "modified_by": "Administrator",
  "module": "Njie",
- "name": "Withdraw",
+ "name": "Customer Credit",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
