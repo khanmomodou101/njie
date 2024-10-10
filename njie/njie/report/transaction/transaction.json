@@ -1,0 +1,27 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2024-03-24 09:34:51.811184",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "json": "{}",
+ "modified": "2024-03-27 03:32:51.726823",
+ "modified_by": "Administrator",
+ "module": "Njie",
+ "name": "Transaction",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Transactions",
+ "report_name": "Transaction",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ]
+}

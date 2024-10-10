@@ -1,10 +1,7 @@
 // Copyright (c) 2024, khan and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('Withdraw', {
-	// refresh: function(frm) {
-
-	// }
+frappe.ui.form.on('Credit Return', {
 	refresh: function(frm) {
 		
 		if (frappe.user_roles.includes("Sales Master Manager")){

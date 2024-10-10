@@ -5,10 +5,13 @@ import frappe
 from frappe.model.document import Document
 
 class Deposit(Document):
+    def validate(self):
+         pass
     def on_submit(self):
         self.update_customer_balance()
         self.add_deposit_transaction()
         frappe.msgprint('Deposit added successfully')
+        self.update_balance()
 
 	#update customer balance
     def update_customer_balance(self):
@@ -34,4 +37,14 @@ class Deposit(Document):
             'amount': self.amount,
             'customer_name': self.customer_name
         }).insert()
-         
+    def update_balance(self):
+        balance = frappe.db.get_value('Customer', self.customer, 'custom_balance')
+        frappe.db.set_value('Deposit', self.name, 'balance', balance)
+        frappe.db.commit()
+        frappe.reload_doctype('Deposit')
+
+    def validate_date(self):
+        if self.posting_date > frappe.utils.nowdate():
+            frappe.throw('Posting date cannot be in the future')
+        if self.posting_date < frappe.utils.nowdate():
+            frappe.throw('Posting date cannot be in the past')

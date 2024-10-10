@@ -12,13 +12,12 @@
   "customer_name",
   "customer_batch",
   "column_break_oysw3",
+  "total_amount",
   "posting_date",
   "posting_time",
   "section_break_fcbdy",
-  "credit_items",
   "section_break_yldoj",
   "column_break_boj52",
-  "total_amount",
   "amended_from"
  ],
  "fields": [
@@ -82,20 +81,15 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "credit_items",
-   "fieldtype": "Table",
-   "label": "Credit Items",
-   "options": "Credit Item"
-  },
-  {
    "fieldname": "column_break_boj52",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "total_amount",
    "fieldtype": "Currency",
-   "label": "Total Amount",
-   "options": "Company:company:default_currency"
+   "label": " Amount",
+   "options": "Company:company:default_currency",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_yldoj",
@@ -105,7 +99,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-28 08:49:11.266371",
+ "modified": "2024-03-24 10:19:38.341201",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Customer Credit",

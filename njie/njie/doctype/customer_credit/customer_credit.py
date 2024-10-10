@@ -13,9 +13,7 @@ class CustomerCredit(Document):
 		frappe.msgprint('Credit added successfully')
 
 	def get_total_credit(self):
-		total_credit = 0
-		for credit in self.credit_items:
-			total_credit += credit.price
+		total_credit = self.total_amount
 		self.total_amount = total_credit
 
 	def add_credit_transaction(self):

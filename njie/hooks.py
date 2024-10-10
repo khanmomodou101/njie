@@ -130,7 +130,13 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
+    #cron  job to run every day at 23:30
+    "cron": {
+        "30 23 * * *": [
+            "njie.api.create_daily_report"
+        ]
+    }
 # 	"all": [
 # 		"njie.tasks.all"
 # 	],
@@ -146,7 +152,7 @@ doc_events = {
 # 	"monthly": [
 # 		"njie.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------

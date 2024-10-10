@@ -3,13 +3,9 @@
   {
    "chart_name": "Deposit",
    "label": "Deposit"
-  },
-  {
-   "chart_name": "Withdrawal",
-   "label": "Withdrawal"
   }
  ],
- "content": "[{\"id\":\"PJxCQq0l2x\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">School and Banking</span>\",\"col\":12}},{\"id\":\"5_hGOtCnY9\",\"type\":\"paragraph\",\"data\":{\"text\":\"Dashboard\",\"col\":12}},{\"id\":\"R9kLm3R8Vh\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Deposit\",\"col\":6}},{\"id\":\"zztMnZEvoR\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Withdrawal\",\"col\":6}},{\"id\":\"Y7uDGr6hKc\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (Today)\",\"col\":3}},{\"id\":\"-gLzdujHrB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (Today)\",\"col\":3}},{\"id\":\"f7XjxN7oCC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (This Month)\",\"col\":3}},{\"id\":\"3t9-W8WRqi\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (This Month)\",\"col\":3}},{\"id\":\"ie-ZOZwfUU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"id\":\"WQC5fZIOnF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Deposit\",\"col\":3}},{\"id\":\"BnzM-_IaYH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Withdraw\",\"col\":3}},{\"id\":\"hMvjk7AmO-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}}]",
+ "content": "[{\"id\":\"R9kLm3R8Vh\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Deposit\",\"col\":12}},{\"id\":\"Y7uDGr6hKc\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (Today)\",\"col\":3}},{\"id\":\"-gLzdujHrB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (Today)\",\"col\":3}},{\"id\":\"f7XjxN7oCC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (This Month)\",\"col\":3}},{\"id\":\"3t9-W8WRqi\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (This Month)\",\"col\":3}},{\"id\":\"LgX9Rcru3i\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"F-o6JIgGEz\",\"type\":\"card\",\"data\":{\"card_name\":\"Credit and Payments\",\"col\":4}},{\"id\":\"7MOwCgAmAH\",\"type\":\"card\",\"data\":{\"card_name\":\"Bank Master\",\"col\":4}},{\"id\":\"44fvLoMpEn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transactions Report\",\"col\":3}}]",
  "creation": "2024-02-27 13:34:16.912598",
  "custom_blocks": [],
  "docstatus": 0,
@@ -20,8 +16,87 @@
  "idx": 0,
  "is_hidden": 0,
  "label": "School and Banking",
- "links": [],
- "modified": "2024-02-27 14:52:00.954416",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Credit and Payments",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Credit",
+   "link_count": 0,
+   "link_to": "Customer Credit",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Credit Payment",
+   "link_count": 0,
+   "link_to": "Credit Payment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Credit Return",
+   "link_count": 0,
+   "link_to": "Credit Return",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bank Master",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Deposit",
+   "link_count": 0,
+   "link_to": "Deposit",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Withdraw",
+   "link_count": 0,
+   "link_to": "Withdraw",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_count": 0,
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-03-30 05:14:33.640957",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "School and Banking",
@@ -53,32 +128,9 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Customer",
-   "link_to": "Customer",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "label": "Deposit",
-   "link_to": "Deposit",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "List",
-   "label": "Withdraw",
-   "link_to": "Withdraw",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Sales Invoice",
-   "link_to": "Sales Invoice",
-   "type": "DocType"
+   "label": "Transactions Report",
+   "link_to": "Transaction",
+   "type": "Report"
   }
  ],
  "title": "School and Banking"

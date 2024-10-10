@@ -1,8 +1,9 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:DPS-{####}",
- "creation": "2024-02-25 04:55:23.926376",
+ "creation": "2024-04-13 14:53:39.116677",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -10,6 +11,7 @@
  "field_order": [
   "customer",
   "customer_name",
+  "balance",
   "customer_batch",
   "column_break_oysw3",
   "amount",
@@ -66,13 +68,15 @@
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "label": "Posting Date",
-   "options": "Today"
+   "options": "Today",
+   "read_only": 1
   },
   {
    "default": "Now",
    "fieldname": "posting_time",
    "fieldtype": "Time",
-   "label": "Posting Time"
+   "label": "Posting Time",
+   "read_only": 1
   },
   {
    "fetch_from": "customer.custom_batch",
@@ -82,12 +86,21 @@
    "in_standard_filter": 1,
    "label": "Customer Batch",
    "read_only": 1
+  },
+  {
+   "fetch_from": "customer.custom_balance",
+   "fieldname": "balance",
+   "fieldtype": "Currency",
+   "label": "Balance",
+   "options": "Company:company:default_currency",
+   "precision": "0",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-27 15:36:50.026832",
+ "modified": "2024-06-02 05:26:43.333499",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Deposit",
@@ -114,9 +127,21 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "All",
+   "role": "Sales User",
    "share": 1,
    "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
    "write": 1
   }
  ],
