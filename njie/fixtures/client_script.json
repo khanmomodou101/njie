@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Customer",
+  "enabled": 1,
+  "modified": "2024-02-28 08:18:57.893787",
+  "module": "Njie",
+  "name": "Hide fields",
+  "script": "frappe.ui.form.on(\"Customer\",{\n  refresh(frm){\n        cur_frm.set_df_property('address_contacts', 'hidden',true);\n        cur_frm.set_df_property('primary_address_and_contact_detail', 'hidden',true);\n        cur_frm.set_df_property('taxation_section', 'hidden',true);\n        cur_frm.set_df_property('credit_limit_section', 'hidden',true);\n        cur_frm.set_df_property('default_receivable_accounts', 'hidden',true);\n        cur_frm.set_df_property('loyalty_points_tab', 'hidden',true);\n        cur_frm.set_df_property('sales_team_section', 'hidden',true);\n        cur_frm.set_df_property('sales_team', 'hidden',true);\n        cur_frm.set_df_property('so_required', 'hidden',true);\n        cur_frm.set_df_property('is_frozen', 'hidden',true);\n        cur_frm.set_df_property('disabled', 'hidden',true);\n        cur_frm.set_df_property('dn_required', 'hidden',true);\n\n  }\n});\n\n",
+  "view": "Form"
+ }
+]

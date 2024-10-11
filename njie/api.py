@@ -55,3 +55,9 @@ def get_data():
         data.append(transaction.transaction_type)
         data.append(transaction.amount)
     return data
+@frappe.whitelist()
+def update_customer():
+    # update customer branch to Njie Charakh World Market 1
+    frappe.db.sql(
+        "UPDATE `tabTransactions` SET branch = 'Njie Charakh World Market 1'")
+    frappe.db.commit()

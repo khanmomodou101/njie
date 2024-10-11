@@ -8,21 +8,30 @@ frappe.query_reports["Transaction"] = {
 			"fieldname": "from_date",
 			"label": __("Date"),
 			"fieldtype": "Date",	
-			"default": frappe.datetime.get_today(),
+			"default": frappe.datetime.get_today() 
 		},
 		{
 			"fieldname": "to_date",
 			"label": __("To Date"),
 			"fieldtype": "Date",	
-			"default": frappe.datetime.get_today(),
+			"default": frappe.datetime.get_today()
+		},
+		{
+			"fieldname": "branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+
 		},
 		{
 			"fieldname": "customer_name",
 			"label": __("Customer"),
 			"fieldtype": "Link",
 			"options": "Customer",
+		
 
 		},
+		
 		
 		{
 			"fieldname": "transaction_type",

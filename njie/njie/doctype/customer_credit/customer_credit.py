@@ -31,7 +31,8 @@ class CustomerCredit(Document):
 			'date': self.posting_date,
 			'transaction_type': 'Credit',
 			'amount': self.total_amount,
-			'customer_name': self.customer_name
+			'customer_name': self.customer_name,
+			"branch": doc.custom_branch
 		}).insert()
 	
 	#update customer credit balance

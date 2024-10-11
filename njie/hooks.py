@@ -222,3 +222,12 @@ scheduler_events = {
 # auth_hooks = [
 # 	"njie.auth.validate"
 # ]
+fixtures = [
+    {"doctype": "Client Script", 
+    "filters": [["module" , "in" , ("Njie" )]]
+    },
+    {"doctype": "Custom Field",
+    "filters": [["module" , "in" , ("Njie" )]]
+    },
+  
+    ]
