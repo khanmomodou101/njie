@@ -61,3 +61,4 @@ def update_customer():
     frappe.db.sql(
         "UPDATE `tabTransactions` SET branch = 'Njie Charakh World Market 1'")
     frappe.db.commit()
+
