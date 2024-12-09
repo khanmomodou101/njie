@@ -10,11 +10,19 @@ def execute(filters=None):
 
 def get_columns():
     columns = [
+        # transaction id
+        {
+            "fieldname": "transaction_id",
+            "label": "Transaction ID",
+            "fieldtype": "Link",
+            "options": "Transactions",
+            "width": 200
+
+        },
         {
             "fieldname": "customer_name",
             "label": "Customer Name",
-            "fieldtype": "Link",
-            "options": "Customer",
+            "fieldtype": "Data",
             "width": 300
         },
         {
@@ -39,7 +47,7 @@ def get_columns():
     return columns
 
 def get_data(filters):
-    transactions = frappe.get_all("Transactions", filters={"date": ["between", [filters.get("from_date"), filters.get("to_date")]]}, fields=["customer_name", "date", "transaction_type", "amount", "branch"])
+    transactions = frappe.get_all("Transactions", filters={"date": ["between", [filters.get("from_date"), filters.get("to_date")]]}, fields=["name", "customer_name", "date", "transaction_type", "amount", "branch"])
     data = []
     for transaction in transactions:
         if filters.get("customer_name") and filters.get("customer_name") != transaction.customer_name:
@@ -49,6 +57,7 @@ def get_data(filters):
         if filters.get("branch") and filters.get("branch") != transaction.branch:
             continue
         data.append({
+            "transaction_id": transaction.name,
             "customer_name": transaction.customer_name,
             "date": transaction.date,
             "transaction_type": transaction.transaction_type,
