@@ -1,12 +1,23 @@
 import frappe
 from frappe.model.document import Document
 import requests
-
+from frappe.utils import getdate, flt
 
 def autoname(doc, method=None):
     doc.name = doc.phone_number
 
+@frappe.whitelist()
+def update_daily_expenses_in_sales_invoice(doc, method=None):
+    total_expenses = 0
+    total_cash_balance = 0
+    for payment in doc.payments:
+        if payment.mode_of_payment == "Cash":
+            total_cash_balance += payment.amount
 
+    for item in doc.items:
+        total_expenses += item.custom_expenses
+    doc.custom_total_expenses = total_expenses
+    doc.custom_balance = total_cash_balance - total_expenses
 # create daily report
 @frappe.whitelist()
 def create_daily_report():
@@ -62,3 +73,113 @@ def update_customer():
         "UPDATE `tabTransactions` SET branch = 'Njie Charakh World Market 1'")
     frappe.db.commit()
 
+@frappe.whitelist()
+def get_date():
+    # return the current year 
+    from frappe.utils import today, getdate
+    year = "2023"
+    first_day = getdate(year + "-01-01")
+    last_day = getdate(year + "-12-31")
+    return first_day
+    
+    
+
+@frappe.whitelist()
+def get_blogs():
+    try:
+        blogs  = frappe.get_list("Blog Post", fields=["title", "published_on", "blog_intro", "content", "blog_category"])
+        frappe.local.response.update({
+            "http_status_code": 200,
+            "data": blogs
+        })
+    except Exception as e:
+        frappe.local.response.update({
+            "http_status_code": 500,
+            "error": str(e)
+        })
+
+# id: 'household-001',
+#         name: 'Premium Cookware Set',
+#         description: 'High-quality cooking utensils for your kitchen',
+#         category: 'Household Items',
+#         price: 'From D3,500',
+#         image: 'https://images.unsplash.com/photo-1590794056226-187342175e2f?q=80&w=800&auto=format',
+#         features: ['Durable materials', 'Complete set', 'Non-stick coating']
+@frappe.whitelist(allow_guest=True)
+def get_products():
+    try:
+        products = frappe.get_list("Website Item")
+        data = []
+        for product in products:
+            doc = frappe.get_doc("Website Item", product.name)
+            price = frappe.db.get_value("Item Price", {"item_code": product.web_item_name}, "price_list_rate")
+            data.append({
+                "id": doc.web_item_name,
+                "name": doc.web_item_name,
+                "category": doc.item_group,
+                "image": frappe.utils.get_url(doc.thumbnail) if doc.thumbnail else "https://njie.royalsmb.com/files/njie_harakha_logo_-removebg-preview.png",
+                "description": doc.short_description,
+                "price": f"From D{price}" if price else "From D0",
+                "features": doc.website_specifications
+            })
+        frappe.local.response.update({
+            "http_status_code": 200,
+            "data": data
+        })
+    except Exception as e:
+        frappe.local.response.update({
+            "http_status_code": 500,
+            "error": str(e)
+        })
+
+@frappe.whitelist()
+def update_transactions(doctype):
+    docs = frappe.get_all(doctype)
+    for doc in docs:
+        doc_transaction = frappe.get_doc(doctype, doc.name)
+        customer = frappe.get_doc('Customer', doc_transaction.customer)
+        frappe.get_doc({
+			'doctype': 'Transactions',
+			'date': doc_transaction.posting_date,
+			'transaction_type': doctype,
+			'amount': doc_transaction.amount,
+			'customer_name': doc_transaction.customer_name,
+			"branch": customer.custom_branch,
+			"batch": customer.custom_batch
+		}).insert()
+    frappe.db.commit()
+    return "Success"
+
+@frappe.whitelist()
+def update_trans(doctype):
+    # Fetch all transactions in one query
+    transactions = frappe.db.sql(f"""
+        SELECT name, posting_date, customer, customer_name, total_amount
+        FROM `tab{doctype}`
+    """, as_dict=True)
+
+    if not transactions:
+        return "No transactions found"
+
+    
+    for t in transactions:
+        customer_info = frappe.get_doc("Customer", t["customer"])
+        frappe.get_doc({
+            "doctype": "Transactions",
+            "date": t["posting_date"],
+            "transaction_type": doctype,
+            "amount": t["total_amount"],
+            "customer_name": t["customer_name"],
+            "branch": customer_info.get("custom_branch"),
+            "batch": customer_info.get("custom_batch")
+        }).insert()
+    frappe.db.commit()
+
+    
+    return "Success"
+
+@frappe.whitelist()
+def delete_transactions():
+    frappe.db.sql("DELETE FROM `tabTransactions`")
+    frappe.db.commit()
+    return "Success"

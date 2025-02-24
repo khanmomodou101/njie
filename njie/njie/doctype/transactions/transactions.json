@@ -11,7 +11,8 @@
   "date",
   "transaction_type",
   "amount",
-  "branch"
+  "branch",
+  "batch"
  ],
  "fields": [
   {
@@ -51,12 +52,18 @@
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Data",
+   "label": "Batch",
+   "read_only": 1
   }
  ],
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-10 22:47:44.762502",
+ "modified": "2025-02-03 20:05:16.959932",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Transactions",

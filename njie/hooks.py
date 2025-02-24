@@ -1,9 +1,25 @@
 app_name = "njie"
 app_title = "Njie"
-app_publisher = "khan"
-app_description = "Njie Charakh"
-app_email = "khanmomodou101@gmail.com"
-app_license = "MIT"
+app_publisher = "royalsmb"
+app_description = "njie"
+app_email = "info@royalsmb.com"
+app_license = "mit"
+
+# Apps
+# ------------------
+
+# required_apps = []
+
+# Each item in the list will be shown as an app in the apps page
+# add_to_apps_screen = [
+# 	{
+# 		"name": "njie",
+# 		"logo": "/assets/njie/logo.png",
+# 		"title": "Njie",
+# 		"route": "/njie",
+# 		"has_permission": "njie.api.permission.has_app_permission"
+# 	}
+# ]
 
 # Includes in <head>
 # ------------------
@@ -31,6 +47,11 @@ app_license = "MIT"
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+
+# Svg Icons
+# ------------------
+# include app icons in desk
+# app_include_icons = "njie/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -116,27 +137,18 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
-    'Customer': {
-        'validate': 'njie.api.autoname'
-    }
+# doc_events = {
 # 	"*": {
 # 		"on_update": "method",
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
 # 	}
-}
+# }
 
 # Scheduled Tasks
 # ---------------
 
-scheduler_events = {
-    #cron  job to run every day at 23:30
-    "cron": {
-        "30 23 * * *": [
-            "njie.api.create_daily_report"
-        ]
-    }
+# scheduler_events = {
 # 	"all": [
 # 		"njie.tasks.all"
 # 	],
@@ -152,7 +164,7 @@ scheduler_events = {
 # 	"monthly": [
 # 		"njie.tasks.monthly"
 # 	],
-}
+# }
 
 # Testing
 # -------
@@ -222,12 +234,11 @@ scheduler_events = {
 # auth_hooks = [
 # 	"njie.auth.validate"
 # ]
-fixtures = [
-    {"doctype": "Client Script", 
-    "filters": [["module" , "in" , ("Njie" )]]
-    },
-    {"doctype": "Custom Field",
-    "filters": [["module" , "in" , ("Njie" )]]
-    },
-  
-    ]
+
+# Automatically update python controller files with type annotations for this app.
+# export_python_type_annotations = True
+
+# default_log_clearing_doctypes = {
+# 	"Logging DocType Name": 30  # days to retain logs
+# }
+

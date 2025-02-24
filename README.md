@@ -1,7 +1,7 @@
 ## Njie
 
-Njie Charakh
+njie
 
 #### License
 
-MIT
+mit

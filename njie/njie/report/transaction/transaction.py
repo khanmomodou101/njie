@@ -47,10 +47,10 @@ def get_columns():
     return columns
 
 def get_data(filters):
-    transactions = frappe.get_all("Transactions", filters={"date": ["between", [filters.get("from_date"), filters.get("to_date")]]}, fields=["name", "customer_name", "date", "transaction_type", "amount", "branch"])
+    transactions = frappe.get_all("Transactions", filters={"date": ["between", [filters.get("from_date"), filters.get("to_date")]]}, fields=["name", "batch", "customer_name", "date", "transaction_type", "amount", "branch"])
     data = []
     for transaction in transactions:
-        if filters.get("customer_name") and filters.get("customer_name") != transaction.customer_name:
+        if filters.get("batch") and filters.get("batch") != transaction.batch:
             continue
         if filters.get("transaction_type") and filters.get("transaction_type") != transaction.transaction_type:
             continue

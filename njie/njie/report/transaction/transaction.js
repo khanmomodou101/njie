@@ -38,6 +38,12 @@ frappe.query_reports["Transaction"] = {
 			"label": __("Transaction Type"),
 			"fieldtype": "Select",
 			"options": ["Deposit", "Withdrawal", "Credit", "Credit Payment"],
+		},
+		{
+			"fieldname": "batch",
+			"label": __("Batch"),
+			"fieldtype": "Link",
+			"options": "Customers Batch",
 		}
 
 	]

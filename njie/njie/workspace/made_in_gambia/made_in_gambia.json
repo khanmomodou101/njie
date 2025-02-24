@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"jsbqmvjzFB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Made In Gambia</span>\",\"col\":12}},{\"id\":\"-iQriPxNsO\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Local Parners\",\"col\":4}},{\"id\":\"hnCoYZ8wbm\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Shelves\",\"col\":4}},{\"id\":\"rI4OWD66ve\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"2fNyUzWIoZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Partners\",\"col\":3}},{\"id\":\"E9DgSOW1Bx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse\",\"col\":3}},{\"id\":\"qG-IM48pyS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"DMZzPdRKmq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"id\":\"kB4uPar7lu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Ledger\",\"col\":3}},{\"id\":\"KV4d1GoMte\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Invoice\",\"col\":3}}]",
+ "content": "[{\"id\":\"jsbqmvjzFB\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Made In Gambia</span>\",\"col\":12}},{\"id\":\"-iQriPxNsO\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Local Parners\",\"col\":4}},{\"id\":\"hnCoYZ8wbm\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Shelves\",\"col\":4}},{\"id\":\"rI4OWD66ve\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"2fNyUzWIoZ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Partners\",\"col\":3}},{\"id\":\"E9DgSOW1Bx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse\",\"col\":3}},{\"id\":\"qG-IM48pyS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Item\",\"col\":3}},{\"id\":\"DMZzPdRKmq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"id\":\"kB4uPar7lu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Ledger\",\"col\":3}},{\"id\":\"KV4d1GoMte\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Invoice\",\"col\":3}},{\"id\":\"YLuzyPFejT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Made In Gambia\",\"col\":3}}]",
  "creation": "2024-10-13 19:05:44.078336",
  "custom_blocks": [],
  "docstatus": 0,
@@ -12,7 +12,7 @@
  "is_hidden": 0,
  "label": "Made In Gambia",
  "links": [],
- "modified": "2024-10-22 17:21:12.938006",
+ "modified": "2025-02-03 19:55:42.027333",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Made In Gambia",
@@ -33,6 +33,13 @@
  "roles": [],
  "sequence_id": 2.0,
  "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Made In Gambia",
+   "link_to": "Made in Gambia",
+   "type": "Report"
+  },
   {
    "color": "Grey",
    "doc_view": "List",

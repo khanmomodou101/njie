@@ -37,7 +37,8 @@ class Deposit(Document):
             'transaction_type': 'Deposit',
             'amount': self.amount,
             'customer_name': self.customer_name,
-            "branch": doc.custom_branch
+            "branch": doc.custom_branch,
+            "batch": doc.custom_batch
         }).insert()
     def update_balance(self):
         balance = frappe.db.get_value('Customer', self.customer, 'custom_balance')

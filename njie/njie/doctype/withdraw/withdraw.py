@@ -35,5 +35,6 @@ class Withdraw(Document):
             'transaction_type': 'Withdrawal',
             'amount': self.amount,
             'customer_name': self.customer_name,
-            "branch": doc.custom_branch
+            "branch": doc.custom_branch,
+            "custom_batch": doc.custom_batch
         }).insert()

@@ -17,6 +17,7 @@ class CreditPayment(Document):
 	def update_customer_credit_balance(self):
 		balance = float(frappe.db.get_value('Customer', self.customer, 'custom_credit_value')) - self.amount
 		frappe.db.set_value('Customer', self.customer, 'custom_credit_value', balance)
+		frappe.db.commit()
 
 	def add_credit_payment_transaction(self):
 		doc = frappe.get_doc('Customer', self.customer)
@@ -34,5 +35,6 @@ class CreditPayment(Document):
 			'transaction_type': 'Credit Payment',
 			'amount': self.amount,
 			'customer_name': self.customer_name,
-			"branch": doc.custom_branch
+			"branch": doc.custom_branch,
+			"batch": doc.custom_batch
 		}).insert()
