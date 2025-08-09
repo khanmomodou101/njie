@@ -192,15 +192,25 @@ def delete_transactions():
 
 
 
+def generate_valid_ean13():
+    """Generate a valid EAN-13 barcode with proper check digit"""
+    # Generate 12 random digits
+    digits = [random.randint(0, 9) for _ in range(12)]
+    
+    # Calculate check digit using EAN-13 algorithm
+    odd_sum = sum(digits[i] for i in range(0, 12, 2))  # positions 1, 3, 5, 7, 9, 11
+    even_sum = sum(digits[i] for i in range(1, 12, 2))  # positions 2, 4, 6, 8, 10, 12
+    
+    total = odd_sum + (even_sum * 3)
+    check_digit = (10 - (total % 10)) % 10
+    
+    # Add check digit to complete the EAN-13
+    digits.append(check_digit)
+    
+    return ''.join(map(str, digits))
+
 @frappe.whitelist()
 def auto_generate_barcode():
-    try:
-        import barcode
-        from barcode.writer import ImageWriter
-        from PIL import Image
-    except ImportError:
-        frappe.throw("Missing required packages. Please install: pip install python-barcode[images]")
-    
     items = frappe.get_all("Item", fields=["name"])
 
     for item in items:
@@ -213,8 +223,8 @@ def auto_generate_barcode():
 
         barcode_number = None
         while True:
-            # Generate a random 12-digit number for EAN-12
-            candidate = str(random.randint(100000000000, 999999999999))
+            # Generate a valid EAN-13 number
+            candidate = generate_valid_ean13()
 
             # Check if barcode exists in Item Barcode child table
             exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
@@ -222,27 +232,20 @@ def auto_generate_barcode():
                 barcode_number = candidate
                 break  # Found a unique barcode
 
-        # Generate barcode image
+        # Generate barcode image using BarcodeAPI.org
         try:
-            # Create EAN-12 barcode (which is UPC-A format)
-            ean12 = barcode.get_barcode_class('upc')
-            barcode_instance = ean12(barcode_number, writer=ImageWriter())
+            # Use BarcodeAPI.org to generate EAN-13 barcode
+            api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}"
             
-            # Create temporary file for the barcode image
-            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
-                # Save barcode image to temporary file
-                barcode_instance.save(temp_file.name.replace('.png', ''))
-                temp_file_path = temp_file.name.replace('.png', '') + '.png'
-                
-                # Read the image file
-                with open(temp_file_path, 'rb') as image_file:
-                    image_content = image_file.read()
-                
-                # Create File document in Frappe
+            # Make request to BarcodeAPI.org
+            response = requests.get(api_url, stream=True)
+            
+            if response.status_code == 200:
+                # Create File document in Frappe with the downloaded image
                 file_doc = frappe.get_doc({
                     "doctype": "File",
-                    "file_name": f"barcode_ean12_{item.name}_{barcode_number}.png",
-                    "content": image_content,
+                    "file_name": f"barcode_ean13_{item.name}_{barcode_number}.png",
+                    "content": response.content,
                     "decode": False,
                     "is_private": 0,
                     "folder": "Home/Attachments"
@@ -252,21 +255,18 @@ def auto_generate_barcode():
                 
                 # Get the file URL
                 barcode_url = file_doc.file_url
-                
-                # Clean up temporary file
-                try:
-                    os.unlink(temp_file_path)
-                except:
-                    pass
+            else:
+                frappe.log_error(f"BarcodeAPI.org request failed for item {item.name}: HTTP {response.status_code}")
+                barcode_url = None
                 
         except Exception as e:
             frappe.log_error(f"Error generating barcode image for item {item.name}: {str(e)}")
             barcode_url = None
 
-        # Append to child table with barcode URL and EAN-12 type
+        # Append to child table with barcode URL and EAN-13 type
         doc.append("barcodes", {
             "barcode": barcode_number,
-            "barcode_type": "EAN-12",
+            "barcode_type": "EAN",
             "barcode_url": barcode_url
         })
 
@@ -275,22 +275,15 @@ def auto_generate_barcode():
         doc.save()
 
     frappe.db.commit()
-    return "Unique EAN-12 barcodes with images generated for items without barcodes."
+    return "Unique EAN-13 barcodes with images generated for items without barcodes."
 
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
-    try:
-        import barcode
-        from barcode.writer import ImageWriter
-        from PIL import Image
-    except ImportError:
-        frappe.throw("Missing required packages. Please install: pip install python-barcode[images]")
-
     
     barcode_number = None
     while True:
-        # Generate a random 12-digit number for EAN-12
-        candidate = str(random.randint(100000000000, 999999999999))
+        # Generate a valid EAN-13 number
+        candidate = generate_valid_ean13()
 
         # Check if barcode exists in Item Barcode child table
         exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
@@ -298,27 +291,20 @@ def generate_barcode_after_save(doc, method=None):
             barcode_number = candidate
             break  # Found a unique barcode
 
-    # Generate barcode image
+    # Generate barcode image using BarcodeAPI.org
     try:
-        # Create EAN-12 barcode (which is UPC-A format)
-        ean12 = barcode.get_barcode_class('upc')
-        barcode_instance = ean12(barcode_number, writer=ImageWriter())
+        # Use BarcodeAPI.org to generate EAN-13 barcode
+        api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}"
         
-        # Create temporary file for the barcode image
-        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
-            # Save barcode image to temporary file
-            barcode_instance.save(temp_file.name.replace('.png', ''))
-            temp_file_path = temp_file.name.replace('.png', '') + '.png'
-            
-            # Read the image file
-            with open(temp_file_path, 'rb') as image_file:
-                image_content = image_file.read()
-            
-            # Create File document in Frappe
+        # Make request to BarcodeAPI.org
+        response = requests.get(api_url, stream=True)
+        
+        if response.status_code == 200:
+            # Create File document in Frappe with the downloaded image
             file_doc = frappe.get_doc({
                 "doctype": "File",
-                "file_name": f"barcode_ean12_{doc.name}_{barcode_number}.png",
-                "content": image_content,
+                "file_name": f"barcode_ean13_{doc.name}_{barcode_number}.png",
+                "content": response.content,
                 "decode": False,
                 "is_private": 0,
                 "folder": "Home/Attachments"
@@ -328,21 +314,18 @@ def generate_barcode_after_save(doc, method=None):
             
             # Get the file URL
             barcode_url = file_doc.file_url
-            
-            # Clean up temporary file
-            try:
-                os.unlink(temp_file_path)
-            except:
-                pass
+        else:
+            frappe.log_error(f"BarcodeAPI.org request failed for item {doc.name}: HTTP {response.status_code}")
+            barcode_url = None
             
     except Exception as e:
         frappe.log_error(f"Error generating barcode image for item {doc.name}: {str(e)}")
         barcode_url = None
 
-    # Append to child table with barcode URL and EAN-12 type
+    # Append to child table with barcode URL and EAN-13 type
     doc.append("barcodes", {
         "barcode": barcode_number,
-        "barcode_type": "EAN-12",
+        "barcode_type": "EAN",
         "barcode_url": barcode_url
     })
 
@@ -498,7 +481,7 @@ def test_barcode_creation():
     """, as_dict=True)
     
     # Check files created
-    files_count = frappe.db.count("File", {"file_name": ["like", "%barcode_ean12%"]})
+    files_count = frappe.db.count("File", {"file_name": ["like", "%barcode_ean13%"]})
     
     return {
         "items_count": items_count,
@@ -534,4 +517,22 @@ def create_test_items():
     
     frappe.db.commit()
     return f"Created {len(created_items)} test items: {', '.join(created_items)}"
+
+@frappe.whitelist()
+def verify_ean13_checksum(ean13_code):
+    """Verify if an EAN-13 code has a valid checksum"""
+    if len(ean13_code) != 13:
+        return False
+    
+    digits = [int(d) for d in ean13_code]
+    
+    # Calculate check digit for first 12 digits
+    odd_sum = sum(digits[i] for i in range(0, 12, 2))
+    even_sum = sum(digits[i] for i in range(1, 12, 2))
+    
+    total = odd_sum + (even_sum * 3)
+    calculated_check = (10 - (total % 10)) % 10
+    
+    # Compare with actual check digit
+    return calculated_check == digits[12]
 
