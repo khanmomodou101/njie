@@ -207,8 +207,9 @@ def auto_generate_barcode():
         doc = frappe.get_doc("Item", item.name)
 
         # Skip if item already has at least one barcode
-        if doc.barcodes:
-            continue
+        # if doc.barcodes:
+        #     continue
+        doc.barcodes = []
 
         barcode_number = None
         while True:
@@ -284,7 +285,6 @@ def generate_barcode_after_save(doc, method=None):
     except ImportError:
         frappe.throw("Missing required packages. Please install: pip install python-barcode[images]")
 
-    doc.barcodes = []
     
     barcode_number = None
     while True:
