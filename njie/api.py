@@ -213,8 +213,8 @@ def auto_generate_barcode():
 
         barcode_number = None
         while True:
-            # Generate a random 12-digit number with leading zeros
-            candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
+            # Generate a random 12-digit number for EAN-12
+            candidate = str(random.randint(100000000000, 999999999999))
 
             # Check if barcode exists in Item Barcode child table
             exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
@@ -224,9 +224,9 @@ def auto_generate_barcode():
 
         # Generate barcode image
         try:
-            # Create Code128 barcode
-            code128 = barcode.get_barcode_class('code128')
-            barcode_instance = code128(barcode_number, writer=ImageWriter())
+            # Create EAN-12 barcode (which is UPC-A format)
+            ean12 = barcode.get_barcode_class('upc')
+            barcode_instance = ean12(barcode_number, writer=ImageWriter())
             
             # Create temporary file for the barcode image
             with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
@@ -241,7 +241,7 @@ def auto_generate_barcode():
                 # Create File document in Frappe
                 file_doc = frappe.get_doc({
                     "doctype": "File",
-                    "file_name": f"barcode_{item.name}_{barcode_number}.png",
+                    "file_name": f"barcode_ean12_{item.name}_{barcode_number}.png",
                     "content": image_content,
                     "decode": False,
                     "is_private": 0,
@@ -263,9 +263,10 @@ def auto_generate_barcode():
             frappe.log_error(f"Error generating barcode image for item {item.name}: {str(e)}")
             barcode_url = None
 
-        # Append to child table with barcode URL
+        # Append to child table with barcode URL and EAN-12 type
         doc.append("barcodes", {
             "barcode": barcode_number,
+            "barcode_type": "EAN-12",
             "barcode_url": barcode_url
         })
 
@@ -274,7 +275,7 @@ def auto_generate_barcode():
         doc.save()
 
     frappe.db.commit()
-    return "Unique barcodes with images generated for items without barcodes."
+    return "Unique EAN-12 barcodes with images generated for items without barcodes."
 
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
@@ -288,7 +289,8 @@ def generate_barcode_after_save(doc, method=None):
     
     barcode_number = None
     while True:
-        candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
+        # Generate a random 12-digit number for EAN-12
+        candidate = str(random.randint(100000000000, 999999999999))
 
         # Check if barcode exists in Item Barcode child table
         exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
@@ -298,9 +300,9 @@ def generate_barcode_after_save(doc, method=None):
 
     # Generate barcode image
     try:
-        # Create Code128 barcode
-        code128 = barcode.get_barcode_class('code128')
-        barcode_instance = code128(barcode_number, writer=ImageWriter())
+        # Create EAN-12 barcode (which is UPC-A format)
+        ean12 = barcode.get_barcode_class('upc')
+        barcode_instance = ean12(barcode_number, writer=ImageWriter())
         
         # Create temporary file for the barcode image
         with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
@@ -315,7 +317,7 @@ def generate_barcode_after_save(doc, method=None):
             # Create File document in Frappe
             file_doc = frappe.get_doc({
                 "doctype": "File",
-                "file_name": f"barcode_{doc.name}_{barcode_number}.png",
+                "file_name": f"barcode_ean12_{doc.name}_{barcode_number}.png",
                 "content": image_content,
                 "decode": False,
                 "is_private": 0,
@@ -337,9 +339,10 @@ def generate_barcode_after_save(doc, method=None):
         frappe.log_error(f"Error generating barcode image for item {doc.name}: {str(e)}")
         barcode_url = None
 
-    # Append to child table with barcode URL
+    # Append to child table with barcode URL and EAN-12 type
     doc.append("barcodes", {
         "barcode": barcode_number,
+        "barcode_type": "EAN-12",
         "barcode_url": barcode_url
     })
 
