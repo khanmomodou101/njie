@@ -194,9 +194,10 @@ def auto_generate_barcode():
 
     for item in items:
         doc = frappe.get_doc("Item", item.name)
-        doc.barcodes = []
 
-        
+        # Skip if item already has at least one barcode
+        if doc.barcodes:
+            continue
 
         barcode = None
         while True:
