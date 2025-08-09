@@ -481,3 +481,57 @@ def submit():
     frappe.db.commit()
     return "Success"
 
+@frappe.whitelist()
+def test_barcode_creation():
+    # Check how many items exist
+    items_count = frappe.db.count("Item")
+    
+    # Check how many item barcodes exist
+    barcodes_count = frappe.db.count("Item Barcode")
+    
+    # Get a sample of items with barcodes
+    sample_barcodes = frappe.db.sql("""
+        SELECT i.name as item_name, ib.barcode, ib.barcode_type, ib.barcode_url
+        FROM `tabItem` i
+        JOIN `tabItem Barcode` ib ON ib.parent = i.name
+        LIMIT 5
+    """, as_dict=True)
+    
+    # Check files created
+    files_count = frappe.db.count("File", {"file_name": ["like", "%barcode_ean12%"]})
+    
+    return {
+        "items_count": items_count,
+        "barcodes_count": barcodes_count,
+        "sample_barcodes": sample_barcodes,
+        "barcode_files_count": files_count
+    }
+
+@frappe.whitelist()
+def create_test_items():
+    """Create some test items to test barcode generation"""
+    test_items = [
+        {"item_code": "TEST-001", "item_name": "Test Product 1", "item_group": "Products"},
+        {"item_code": "TEST-002", "item_name": "Test Product 2", "item_group": "Products"},
+        {"item_code": "TEST-003", "item_name": "Test Product 3", "item_group": "Products"},
+    ]
+    
+    created_items = []
+    
+    for item_data in test_items:
+        # Check if item already exists
+        if not frappe.db.exists("Item", item_data["item_code"]):
+            item = frappe.get_doc({
+                "doctype": "Item",
+                "item_code": item_data["item_code"],
+                "item_name": item_data["item_name"],
+                "item_group": item_data["item_group"],
+                "stock_uom": "Nos",
+                "is_stock_item": 1
+            })
+            item.insert(ignore_permissions=True)
+            created_items.append(item_data["item_code"])
+    
+    frappe.db.commit()
+    return f"Created {len(created_items)} test items: {', '.join(created_items)}"
+
