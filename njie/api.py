@@ -4,6 +4,10 @@ import requests
 from frappe.utils import getdate, flt
 import random
 from datetime import datetime, timedelta
+import os
+import tempfile
+import base64
+from io import BytesIO
 
 def autoname(doc, method=None):
     doc.name = doc.phone_number
@@ -190,6 +194,13 @@ def delete_transactions():
 
 @frappe.whitelist()
 def auto_generate_barcode():
+    try:
+        import barcode
+        from barcode.writer import ImageWriter
+        from PIL import Image
+    except ImportError:
+        frappe.throw("Missing required packages. Please install: pip install python-barcode[images]")
+    
     items = frappe.get_all("Item", fields=["name"])
 
     for item in items:
@@ -199,7 +210,7 @@ def auto_generate_barcode():
         if doc.barcodes:
             continue
 
-        barcode = None
+        barcode_number = None
         while True:
             # Generate a random 12-digit number with leading zeros
             candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
@@ -207,12 +218,54 @@ def auto_generate_barcode():
             # Check if barcode exists in Item Barcode child table
             exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
             if not exists:
-                barcode = candidate
+                barcode_number = candidate
                 break  # Found a unique barcode
 
-        # Append to child table
+        # Generate barcode image
+        try:
+            # Create Code128 barcode
+            code128 = barcode.get_barcode_class('code128')
+            barcode_instance = code128(barcode_number, writer=ImageWriter())
+            
+            # Create temporary file for the barcode image
+            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+                # Save barcode image to temporary file
+                barcode_instance.save(temp_file.name.replace('.png', ''))
+                temp_file_path = temp_file.name.replace('.png', '') + '.png'
+                
+                # Read the image file
+                with open(temp_file_path, 'rb') as image_file:
+                    image_content = image_file.read()
+                
+                # Create File document in Frappe
+                file_doc = frappe.get_doc({
+                    "doctype": "File",
+                    "file_name": f"barcode_{item.name}_{barcode_number}.png",
+                    "content": image_content,
+                    "decode": False,
+                    "is_private": 0,
+                    "folder": "Home/Attachments"
+                })
+                file_doc.insert(ignore_permissions=True)
+                frappe.db.commit()
+                
+                # Get the file URL
+                barcode_url = file_doc.file_url
+                
+                # Clean up temporary file
+                try:
+                    os.unlink(temp_file_path)
+                except:
+                    pass
+                
+        except Exception as e:
+            frappe.log_error(f"Error generating barcode image for item {item.name}: {str(e)}")
+            barcode_url = None
+
+        # Append to child table with barcode URL
         doc.append("barcodes", {
-            "barcode": barcode
+            "barcode": barcode_number,
+            "barcode_url": barcode_url
         })
 
         # Save the item
@@ -220,33 +273,81 @@ def auto_generate_barcode():
         doc.save()
 
     frappe.db.commit()
-    return "Unique barcodes generated for items without barcodes."
+    return "Unique barcodes with images generated for items without barcodes."
 
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
+    try:
+        import barcode
+        from barcode.writer import ImageWriter
+        from PIL import Image
+    except ImportError:
+        frappe.throw("Missing required packages. Please install: pip install python-barcode[images]")
 
-        doc.barcodes = []
+    doc.barcodes = []
+    
+    barcode_number = None
+    while True:
+        candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
+
+        # Check if barcode exists in Item Barcode child table
+        exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
+        if not exists:
+            barcode_number = candidate
+            break  # Found a unique barcode
+
+    # Generate barcode image
+    try:
+        # Create Code128 barcode
+        code128 = barcode.get_barcode_class('code128')
+        barcode_instance = code128(barcode_number, writer=ImageWriter())
         
-        barcode = None
-        while True:
-            candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
+        # Create temporary file for the barcode image
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as temp_file:
+            # Save barcode image to temporary file
+            barcode_instance.save(temp_file.name.replace('.png', ''))
+            temp_file_path = temp_file.name.replace('.png', '') + '.png'
+            
+            # Read the image file
+            with open(temp_file_path, 'rb') as image_file:
+                image_content = image_file.read()
+            
+            # Create File document in Frappe
+            file_doc = frappe.get_doc({
+                "doctype": "File",
+                "file_name": f"barcode_{doc.name}_{barcode_number}.png",
+                "content": image_content,
+                "decode": False,
+                "is_private": 0,
+                "folder": "Home/Attachments"
+            })
+            file_doc.insert(ignore_permissions=True)
+            frappe.db.commit()
+            
+            # Get the file URL
+            barcode_url = file_doc.file_url
+            
+            # Clean up temporary file
+            try:
+                os.unlink(temp_file_path)
+            except:
+                pass
+            
+    except Exception as e:
+        frappe.log_error(f"Error generating barcode image for item {doc.name}: {str(e)}")
+        barcode_url = None
 
-            # Check if barcode exists in Item Barcode child table
-            exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
-            if not exists:
-                barcode = candidate
-                break  # Found a unique barcode
+    # Append to child table with barcode URL
+    doc.append("barcodes", {
+        "barcode": barcode_number,
+        "barcode_url": barcode_url
+    })
 
-        # Append to child table
-        doc.append("barcodes", {
-            "barcode": barcode
-        })
+    # Save the item
+    doc.flags.ignore_mandatory = True
+    doc.save()
 
-        # Save the item
-        doc.flags.ignore_mandatory = True
-        doc.save()
-
-        frappe.db.commit()
+    frappe.db.commit()
 
 @frappe.whitelist()
 def update_deposit():
