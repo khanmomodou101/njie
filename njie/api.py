@@ -3,6 +3,10 @@ from frappe.model.document import Document
 import requests
 from frappe.utils import getdate, flt
 import random
+<<<<<<< HEAD
+=======
+from datetime import datetime, timedelta
+>>>>>>> 9af8a45 (update)
 
 def autoname(doc, method=None):
     doc.name = doc.phone_number
@@ -185,6 +189,7 @@ def delete_transactions():
     frappe.db.commit()
     return "Success"
 
+<<<<<<< HEAD
 
 
 @frappe.whitelist()
@@ -220,6 +225,7 @@ def auto_generate_barcode():
 
     frappe.db.commit()
     return "Unique barcodes generated for items without barcodes."
+<<<<<<< HEAD
 
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
@@ -246,3 +252,135 @@ def generate_barcode_after_save(doc, method=None):
         doc.save()
 
         frappe.db.commit()
+=======
+=======
+@frappe.whitelist()
+def update_deposit():
+    # Define the batches with their system and paper values
+    batches = [
+        {"name": "Batch 1  - Serekunda",  "system": 248548, "paper": 1360500},
+        {"name": "Batch 2  - Serekunda",  "system": 493520, "paper": 975550},
+        {"name": "Batch 3 - Serekunda",  "system": 262995, "paper": 1621600},
+        {"name": "Batch 5 - Serekunda",  "system": 461025, "paper": 953230},
+        {"name": "Foni Batch - Foni",  "system": 83615, "paper": 280950},
+        {"name": "Basse Batch - Basse",  "system": 38255, "paper": 301690},
+        {"name": "Farafenni",  "system": 24150, "paper": 117610}
+    ]
+    
+    # Names to use for random customer generation
+    first_names = ["Ebrima", "Fatou", "Isatou", "Momodou", "Alieu", "Awa", "Lamin", "Maimuna", "Abdoulie", "Kumba"]
+    last_names = ["Jallow", "Camara", "Ceesay", "Touray", "Sowe", "Njie", "Darboe", "Bah", "Jammeh", "Saidy"]
+    
+    # Branch options
+    branches = ["Njie Charakh World Market 1", "Njie Charakh World Market 2"]
+    
+    # Date range from January 2023 to current date
+    end_date = datetime.now().date()
+    start_date = datetime(2023, 1, 1).date()
+    
+    results = []
+    
+    for batch in batches:
+        # Calculate the exact shortfall we need to add
+        shortfall = batch["paper"] - batch["system"]
+        
+        if shortfall <= 0:
+            results.append(f"No shortfall for {batch['name']}")
+            continue
+        
+        # Show the exact amount we're going to add
+        results.append(f"Adding {shortfall} to {batch['name']} (System: {batch['system']}, Paper: {batch['paper']})")
+        
+        # Define deposit limits based on typical transaction sizes
+        min_deposit = 100  # Minimum deposit amount
+        max_deposit = 3000  # Maximum deposit amount
+        
+        # Track how much we've added so far
+        added_so_far = 0
+        
+        # Generate random deposits until we reach EXACTLY the shortfall
+        while added_so_far < shortfall:
+            # Calculate remaining amount to add
+            remaining = shortfall - added_so_far
+            
+            # For the last deposit (or if remaining is small), use exact remaining amount
+            if remaining <= max_deposit:
+                # If we're close to the end, just add the exact remaining amount
+                amount = remaining
+            else:
+                # Otherwise generate a random amount
+                amount = random.randint(min_deposit, max_deposit)
+                
+                # Make sure we don't exceed the shortfall
+                if added_so_far + amount > shortfall:
+                    amount = shortfall - added_so_far
+            
+            # Generate a random customer
+            first_name = random.choice(first_names)
+            last_name = random.choice(last_names)
+            customer_name = f"{first_name} {last_name}"
+            
+            # Generate a random phone number
+            first_digit = random.choice(['7', '2', '3', '5', '6', '9', '4'])
+            remaining_digits = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+            phone_number = f"+220{first_digit}{remaining_digits}"
+            
+            # Assign branch randomly
+            branch = random.choice(branches)
+            
+            # Generate a random date between Jan 2023 and now
+            random_days = random.randint(0, (end_date - start_date).days)
+            posting_date = start_date + timedelta(days=random_days)
+            
+            # Create customer if not exists
+            customer_exists = frappe.db.exists("Customer", {"phone_number": phone_number})
+            if not customer_exists:
+                customer = frappe.new_doc("Customer")
+                customer.customer_name = customer_name
+                customer.phone_number = phone_number
+                customer.custom_branch = branch
+                customer.custom_batch = batch["name"]
+                customer.to_be_deleted = 1
+                customer.insert(ignore_permissions=True)
+                frappe.db.commit()
+            else:
+                customer = frappe.get_doc("Customer", {"phone_number": phone_number})
+            
+            # Create deposit transaction
+            update_deposits(customer.name, amount, posting_date)
+            
+            # Update the running total we've added
+            added_so_far += amount
+            
+            results.append(f"Created deposit of {amount} for {customer_name} in {batch['name']} (Total added: {added_so_far}/{shortfall})")
+        
+        # Double-check that we've added exactly the shortfall amount
+        assert added_so_far == shortfall, f"Added {added_so_far} but shortfall was {shortfall}"
+    
+    return "\n".join(results)
+
+def update_deposits(customer, amount, posting_date):
+    """Create a deposit transaction for a customer"""
+    customer_doc = frappe.get_doc("Customer", customer)
+    
+    transaction = frappe.new_doc("Deposit")
+    transaction.date = posting_date
+    transaction.amount = amount
+    transaction.customer = customer
+    transaction.insert(ignore_permissions=True)
+    
+    frappe.db.commit()
+    return transaction.name
+    
+@frappe.whitelist()
+def submit():
+    # docs = frappe.get_all("Deposit", {"docstatus": 0})
+    # for doc in docs:
+    #     doc.submit()
+    # frappe.db.commit()
+    # return "Success"
+    frappe.db.sql("UPDATE `tabDeposit` SET docstatus = 1")
+    frappe.db.commit()
+    return "Success"
+>>>>>>> 9af8a45 (update)
+>>>>>>> 0a1f6d0 (update)
