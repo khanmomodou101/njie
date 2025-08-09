@@ -244,3 +244,12 @@ doc_events = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {"doctype": "Client Script", 
+    "filters": [["module" , "in" , ("Njie" )]]
+    },
+    {"doctype": "Custom Field",
+    "filters": [["module" , "in" , ("Njie" )]]
+    },
+  
+    ]
