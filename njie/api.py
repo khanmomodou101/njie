@@ -3,10 +3,7 @@ from frappe.model.document import Document
 import requests
 from frappe.utils import getdate, flt
 import random
-<<<<<<< HEAD
-=======
 from datetime import datetime, timedelta
->>>>>>> 9af8a45 (update)
 
 def autoname(doc, method=None):
     doc.name = doc.phone_number
@@ -189,7 +186,6 @@ def delete_transactions():
     frappe.db.commit()
     return "Success"
 
-<<<<<<< HEAD
 
 
 @frappe.whitelist()
@@ -225,7 +221,6 @@ def auto_generate_barcode():
 
     frappe.db.commit()
     return "Unique barcodes generated for items without barcodes."
-<<<<<<< HEAD
 
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
@@ -252,8 +247,7 @@ def generate_barcode_after_save(doc, method=None):
         doc.save()
 
         frappe.db.commit()
-=======
-=======
+
 @frappe.whitelist()
 def update_deposit():
     # Define the batches with their system and paper values
@@ -382,5 +376,4 @@ def submit():
     frappe.db.sql("UPDATE `tabDeposit` SET docstatus = 1")
     frappe.db.commit()
     return "Success"
->>>>>>> 9af8a45 (update)
->>>>>>> 0a1f6d0 (update)
+
