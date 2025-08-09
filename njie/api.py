@@ -194,6 +194,8 @@ def auto_generate_barcode():
 
     for item in items:
         doc = frappe.get_doc("Item", item.name)
+        if doc.is_stock_item and not doc.barcodes:
+            doc.barcodes = []
 
         # Skip if item already has at least one barcode
         if doc.barcodes:
@@ -201,8 +203,8 @@ def auto_generate_barcode():
 
         barcode = None
         while True:
-            # Generate a random 10-digit number with leading zeros
-            candidate = str(random.randint(0, 10**10 - 1)).zfill(10)
+            # Generate a random 12-digit number with leading zeros
+            candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
 
             # Check if barcode exists in Item Barcode child table
             exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
@@ -225,11 +227,11 @@ def auto_generate_barcode():
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
 
-    if doc.is_stock_item and not doc.barcodes:
+        doc.barcodes = []
         
         barcode = None
         while True:
-            candidate = str(random.randint(0, 10**10 - 1)).zfill(10)
+            candidate = str(random.randint(0, 10**12 - 1)).zfill(12)
 
             # Check if barcode exists in Item Barcode child table
             exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
