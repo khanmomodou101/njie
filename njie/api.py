@@ -220,3 +220,30 @@ def auto_generate_barcode():
 
     frappe.db.commit()
     return "Unique barcodes generated for items without barcodes."
+
+@frappe.whitelist()
+def generate_barcode_after_save(doc, method=None):
+
+    if not doc.barcodes:
+        
+        barcode = None
+        while True:
+            candidate = str(random.randint(0, 10**10 - 1)).zfill(10)
+
+            # Check if barcode exists in Item Barcode child table
+            exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
+            if not exists:
+                barcode = candidate
+                break  # Found a unique barcode
+
+        # Append to child table
+        doc.append("barcodes", {
+            "barcode": barcode
+        })
+
+        # Save the item
+        doc.flags.ignore_mandatory = True
+        doc.save()
+
+        frappe.db.commit()
+    return "Unique barcodes generated for items without barcodes."
