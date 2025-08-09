@@ -2,6 +2,7 @@ import frappe
 from frappe.model.document import Document
 import requests
 from frappe.utils import getdate, flt
+import random
 
 def autoname(doc, method=None):
     doc.name = doc.phone_number
@@ -183,3 +184,39 @@ def delete_transactions():
     frappe.db.sql("DELETE FROM `tabTransactions`")
     frappe.db.commit()
     return "Success"
+
+
+
+@frappe.whitelist()
+def auto_generate_barcode():
+    items = frappe.get_all("Item", fields=["name"])
+
+    for item in items:
+        doc = frappe.get_doc("Item", item.name)
+
+        # Skip if item already has at least one barcode
+        if doc.barcodes:
+            continue
+
+        barcode = None
+        while True:
+            # Generate a random 10-digit number with leading zeros
+            candidate = str(random.randint(0, 10**10 - 1)).zfill(10)
+
+            # Check if barcode exists in Item Barcode child table
+            exists = frappe.db.exists("Item Barcode", {"barcode": candidate})
+            if not exists:
+                barcode = candidate
+                break  # Found a unique barcode
+
+        # Append to child table
+        doc.append("barcodes", {
+            "barcode": barcode
+        })
+
+        # Save the item
+        doc.flags.ignore_mandatory = True
+        doc.save()
+
+    frappe.db.commit()
+    return "Unique barcodes generated for items without barcodes."

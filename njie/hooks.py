@@ -139,7 +139,7 @@ app_license = "mit"
 
 doc_events = {
 	"Sales Invoice": {
-		"on_update": "njie.api.update_daily_expenses_in_sales_invoice",
+		"validate": "njie.api.update_daily_expenses_in_sales_invoice",
 		
 	}
 }
