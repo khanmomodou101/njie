@@ -224,7 +224,7 @@ def auto_generate_barcode():
 @frappe.whitelist()
 def generate_barcode_after_save(doc, method=None):
 
-    if not doc.barcodes:
+    if doc.is_stock_item and not doc.barcodes:
         
         barcode = None
         while True:
@@ -246,4 +246,3 @@ def generate_barcode_after_save(doc, method=None):
         doc.save()
 
         frappe.db.commit()
-    return "Unique barcodes generated for items without barcodes."

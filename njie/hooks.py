@@ -141,7 +141,10 @@ doc_events = {
 	"Sales Invoice": {
 		"validate": "njie.api.update_daily_expenses_in_sales_invoice",
 		
-	}
+	},
+	"Item": {
+        "after_insert": "njie.api.generate_barcode_after_save"
+    }
 }
 
 # Scheduled Tasks
