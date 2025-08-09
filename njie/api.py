@@ -234,8 +234,8 @@ def auto_generate_barcode():
 
         # Generate barcode image using BarcodeAPI.org
         try:
-            # Use BarcodeAPI.org to generate EAN-13 barcode
-            api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}"
+            # Use BarcodeAPI.org to generate EAN-13 barcode with increased spacing
+            api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}?height=20&width=3&margin=10"
             
             # Make request to BarcodeAPI.org
             response = requests.get(api_url, stream=True)
@@ -293,8 +293,8 @@ def generate_barcode_after_save(doc, method=None):
 
     # Generate barcode image using BarcodeAPI.org
     try:
-        # Use BarcodeAPI.org to generate EAN-13 barcode
-        api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}"
+        # Use BarcodeAPI.org to generate EAN-13 barcode with increased spacing
+        api_url = f"https://barcodeapi.org/api/ean13/{barcode_number}?height=100&width=3&margin=10"
         
         # Make request to BarcodeAPI.org
         response = requests.get(api_url, stream=True)
@@ -517,22 +517,4 @@ def create_test_items():
     
     frappe.db.commit()
     return f"Created {len(created_items)} test items: {', '.join(created_items)}"
-
-@frappe.whitelist()
-def verify_ean13_checksum(ean13_code):
-    """Verify if an EAN-13 code has a valid checksum"""
-    if len(ean13_code) != 13:
-        return False
-    
-    digits = [int(d) for d in ean13_code]
-    
-    # Calculate check digit for first 12 digits
-    odd_sum = sum(digits[i] for i in range(0, 12, 2))
-    even_sum = sum(digits[i] for i in range(1, 12, 2))
-    
-    total = odd_sum + (even_sum * 3)
-    calculated_check = (10 - (total % 10)) % 10
-    
-    # Compare with actual check digit
-    return calculated_check == digits[12]
 
