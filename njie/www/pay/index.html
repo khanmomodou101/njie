@@ -1,0 +1,306 @@
+{% extends "templates/web.html" %}
+
+
+{% block header %}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POS QR Pay</title>
+  
+  <style>
+    body { background: #f8fafc; }
+    .pos-container { max-width: 720px; margin: 0 auto; padding: 16px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+ .amount-section { display: grid; gap: 12px; margin-top: 8px; }
+ .amount-label { font-weight: 600; }
+ .total-card { border: 1px solid #cfe9e5; background: #f4fffd; border-radius: 12px; padding: 14px; display: grid; gap: 6px; }
+ .total-title { text-align: center; color: #374151; font-size: 14px; }
+ .total-amount { text-align: center; font-size: 32px; font-weight: 700; letter-spacing: 0.3px; }
+ .fee-note { text-align: center; color: #6b7280; font-size: 12px; }
+ .amount-input-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+ #amount { padding: 12px; font-size: 16px; border: 1px solid #dcdcdc; border-radius: 8px; }
+ .hint { color: #6b7280; font-size: 13px; margin: 4px 0 0; }
+
+.providers-section { margin-top: 20px; }
+.section-title { font-size: 16px; font-weight: 600; margin: 0 0 8px; }
+ .providers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+ .provider-card { display: grid; place-items: center; gap: 10px; padding: 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; cursor: pointer; transition: box-shadow 120ms ease, transform 120ms ease; }
+.provider-card:disabled { opacity: 0.6; cursor: not-allowed; }
+.provider-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); transform: translateY(-1px); }
+.provider-card img { width: 56px; height: 56px; object-fit: contain; }
+.provider-card span { font-weight: 600; font-size: 14px; }
+.badge { font-size: 11px; color: #6b7280; }
+
+.result-section { margin-top: 24px; }
+ .qr-card { border: 1px solid #e5e7eb; border-radius: 16px; padding: 0; display: grid; gap: 0; background: #ffffff; box-shadow: 0 10px 30px rgba(2,6,23,0.08); overflow: hidden; }
+ .qr-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; background: linear-gradient(180deg, #f0f9ff, #e0f2fe); border-bottom: 1px solid #dbeafe; }
+ .qr-header .title { font-weight: 800; color: #0f172a; font-size: 14px; letter-spacing: .2px; }
+ .badge-pill { padding: 4px 10px; background: #0ea5e9; color: #fff; border-radius: 999px; font-weight: 700; font-size: 12px; }
+ .qr-body { display: grid; gap: 16px; padding: 20px 24px; }
+ .qr-title { text-align: center; font-weight: 700; font-size: 16px; color: #0f172a; }
+ .qr-canvas { display: grid; place-items: center; min-height: 240px; }
+ .qr-canvas img { border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+ .cash-note { text-align: center; font-size: 20px; font-weight: 700; }
+ .divider { height: 1px; background: #e5e7eb; margin: 0 24px; }
+ .breakdown { display: grid; gap: 8px; padding: 12px 24px 16px; }
+ .row { display: flex; align-items: center; justify-content: space-between; }
+ .muted { color: #6b7280; }
+ .total-row { font-weight: 800; font-size: 18px; }
+ .actions { display: grid; place-items: center; margin: 12px 0 0; padding-bottom: 12px; }
+ .btn { border: 0; background: #111827; color: #fff; padding: 12px 18px; border-radius: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+ .btn:hover { filter: brightness(1.05); }
+ .note { text-align: center; color: #6b7280; font-size: 12px; padding-bottom: 12px; }
+.link-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; }
+.primary, .secondary { border: 0; padding: 10px 14px; border-radius: 10px; text-decoration: none; display: inline-grid; place-items: center; font-weight: 600; font-size: 14px; }
+.primary { background: #111827; color: #fff; }
+.secondary { background: #f3f4f6; color: #111827; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: 20px; background: #111827; color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 14px; }
+
+@media (max-width: 540px) {
+  .providers-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+  </style>
+</head>
+<body>
+  <main class="pos-container">
+    <section class="amount-section">
+      <div class="total-card">
+        <div class="total-title">Total</div>
+        <div class="total-amount" id="total-amount">GMD 0.00</div>
+        <div class="fee-note">1% platform fee applies to Wave/QMoney/Afrimoney</div>
+      </div>
+      <label for="amount" class="amount-label">Enter amount</label>
+      <div class="amount-input-row">
+        <input id="amount" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" />
+      </div>
+      <div class="hint">Currency: GMD</div>
+      <p class="hint">Select payment method.</p>
+    </section>
+
+    <section class="providers-section">
+      <h2 class="section-title">Select Payment Method</h2>
+      <div class="providers-grid" id="providers-grid">
+        <button class="provider-card" data-provider="cash">
+          <img src="/assets/njie/img/cash.png" alt="Cash" />
+          <span>Cash</span>
+        </button>
+        <button class="provider-card" data-provider="wave">
+          <img src="/assets/njie/img/wave.png" alt="Wave" />
+          <span>Wave</span>
+        </button>
+        <button class="provider-card" data-provider="qmoney" disabled>
+          <img src="/assets/njie/img/qmoney.png" alt="QMoney" />
+          <span>QMoney</span>
+          <span class="badge">Coming soon</span>
+        </button>
+        <button class="provider-card" data-provider="afrimoney" disabled>
+          <img src="/assets/njie/img/afrimoney.png" alt="Afrimoney" />
+          <span>Afrimoney</span>
+          <span class="badge">Coming soon</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="result-section" id="result-section" hidden>
+      <div class="qr-card">
+        <div class="qr-header" id="qr-header" hidden>
+          <div class="title">Payment</div>
+          <div class="badge-pill" id="method-badge">WAVE</div>
+        </div>
+        <div class="qr-body">
+          <div class="qr-title" id="qr-title" hidden>Scan to pay</div>
+          <div class="qr-canvas" id="qr-canvas"></div>
+        </div>
+        <div class="divider" id="qr-divider" hidden></div>
+        <div class="breakdown" id="breakdown" hidden>
+          <div class="row"><span class="muted">Subtotal</span><span id="bd-subtotal">GMD 0.00</span></div>
+          <div class="row"><span class="muted">Processing fee (1%)</span><span id="bd-fee">GMD 0.00</span></div>
+          <div class="row total-row"><span>Total</span><span id="bd-total">GMD 0.00</span></div>
+        </div>
+        <div class="cash-note" id="cash-note" hidden></div>
+        <div class="actions"><button id="confirm-cash" class="btn" hidden>Confirm Cash</button></div>
+        <div class="note" id="powered-note" hidden>Powered by Jokoor Pay</div>
+      </div>
+    </section>
+
+    <div id="toast" class="toast" hidden></div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script>
+  (function () {
+    const amountEl = document.getElementById('amount');
+    const CURRENCY = 'GMD';
+    const providersGrid = document.getElementById('providers-grid');
+    const resultSection = document.getElementById('result-section');
+    const qrCanvas = document.getElementById('qr-canvas');
+    const toast = document.getElementById('toast');
+    const amountSection = document.querySelector('.amount-section');
+    const providersSection = document.querySelector('.providers-section');
+    const totalAmountEl = document.getElementById('total-amount');
+    const cashNote = document.getElementById('cash-note');
+    const breakdown = document.getElementById('breakdown');
+    const bdSubtotal = document.getElementById('bd-subtotal');
+    const bdFee = document.getElementById('bd-fee');
+    const bdTotal = document.getElementById('bd-total');
+    const confirmCashBtn = document.getElementById('confirm-cash');
+    const qrTitle = document.getElementById('qr-title');
+    const qrDivider = document.getElementById('qr-divider');
+    const methodBadge = document.getElementById('method-badge');
+    const qrHeader = document.getElementById('qr-header');
+    const poweredNote = document.getElementById('powered-note');
+
+    function showToast(text) {
+      toast.textContent = text;
+      toast.hidden = false;
+      setTimeout(() => (toast.hidden = true), 2200);
+    }
+
+    function parseAmount() {
+      const raw = (amountEl.value || '').trim();
+      if (!raw) return NaN;
+      const value = Number(raw);
+      return isFinite(value) ? value : NaN;
+    }
+
+    function formatGMD(value) {
+      return 'GMD ' + (Number(value) || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    amountEl.addEventListener('input', () => {
+      const v = parseAmount();
+      totalAmountEl.textContent = formatGMD(isNaN(v) ? 0 : v);
+    });
+
+    function setProvidersDisabled(disabled) {
+      const buttons = providersGrid.querySelectorAll('button.provider-card');
+      buttons.forEach((b) => (b.disabled = disabled));
+    }
+
+    async function createLink(amount, provider, currency) {
+      const success_url = `${location.origin}/pay?status=success`;
+      const error_url = `${location.origin}/pay?status=error`;
+      return new Promise((resolve, reject) => {
+        frappe.call({
+          method: 'njie.www.pay.index.create_payment_link',
+          type: 'POST',
+          freeze: true,
+          args: { amount, success_url, error_url },
+          callback: (r) => {
+            if (!r || typeof r.message === 'undefined') {
+              return reject(new Error('Failed to create payment link'));
+            }
+            const m = r.message;
+            const link = typeof m === 'string' ? m : (m && (m.wave_launch_url || m.link || m.url || m.payment_url));
+            if (!link) return reject(new Error('Payment link not returned'));
+            resolve(link);
+          },
+          error: (xhr) => {
+            try {
+              const resp = xhr && xhr.responseJSON;
+              const msg = (resp && (resp.message || resp._server_messages)) || 'Error creating link';
+              reject(new Error(typeof msg === 'string' ? msg : JSON.stringify(msg)));
+            } catch (e) {
+              reject(new Error('Error creating link'));
+            }
+          },
+        });
+      });
+    }
+
+    async function renderQR(link) {
+      qrCanvas.innerHTML = '';
+      const img = document.createElement('img');
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(link)}`;
+      img.src = qrUrl;
+      img.alt = 'Payment QR';
+      img.width = 240;
+      img.height = 240;
+      qrCanvas.appendChild(img);
+    }
+
+    providersGrid.addEventListener('click', async (e) => {
+      const target = e.target.closest('.provider-card');
+      if (!target) return;
+
+      const provider = target.getAttribute('data-provider');
+      const amount = parseAmount();
+      const currency = CURRENCY;
+      
+
+      if (!provider) return;
+      if (!amount || amount <= 0) {
+        showToast('Enter a valid amount > 0');
+        amountEl.focus();
+        return;
+      }
+
+      setProvidersDisabled(true);
+      showToast('Creating link...');
+
+      try {
+        if (provider === 'cash') {
+          // No QR for cash, show confirmation-only screen
+          resultSection.hidden = false;
+          qrCanvas.innerHTML = '';
+          cashNote.hidden = false;
+          cashNote.textContent = `Collect ${formatGMD(amount)} in cash`;
+          breakdown.hidden = true;
+          confirmCashBtn.hidden = false;
+          qrTitle.hidden = true;
+          qrDivider.hidden = true;
+          qrHeader.hidden = false;
+          methodBadge.textContent = 'CASH';
+          poweredNote.hidden = true;
+          amountSection.hidden = true;
+          providersSection.hidden = true;
+          showToast('Cash selected');
+        } else {
+          const fee = Math.round((amount * 0.01) * 100) / 100;
+          const payable = Math.round((amount + fee) * 100) / 100;
+          bdSubtotal.textContent = formatGMD(amount);
+          bdFee.textContent = formatGMD(fee);
+          bdTotal.textContent = formatGMD(payable);
+          breakdown.hidden = false;
+          confirmCashBtn.hidden = true;
+          qrTitle.hidden = false;
+          qrDivider.hidden = false;
+          qrHeader.hidden = false;
+          methodBadge.textContent = provider.toUpperCase();
+          const link = await createLink(payable, provider, currency);
+          await renderQR(link);
+          resultSection.hidden = false;
+          // Hide everything else when QR is visible
+          amountSection.hidden = true;
+          providersSection.hidden = true;
+          poweredNote.hidden = false;
+          showToast('Payment link created');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast(err && err.message ? err.message : 'Error creating link');
+      } finally {
+        setProvidersDisabled(false);
+      }
+    });
+
+    confirmCashBtn.addEventListener('click', () => {
+      // simple confirmation then reload
+      confirmCashBtn.disabled = true;
+      confirmCashBtn.textContent = 'Confirmed';
+      setTimeout(() => { location.reload(); }, 600);
+    });
+  })();
+  </script>
+</body>
+</html>
+
+{% endblock %}
