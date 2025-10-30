@@ -1,0 +1,174 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:DR-{####}",
+ "creation": "2025-08-13 14:31:40.165005",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_gtng",
+  "date",
+  "column_break_cvub",
+  "machine",
+  "section_break_kwzh",
+  "records",
+  "section_break_ujeq",
+  "total",
+  "total_expenses",
+  "remaining_balance",
+  "column_break_jvni",
+  "total_cash",
+  "total_wave",
+  "total_aps",
+  "expenses_tab",
+  "expenses",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_gtng",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "records",
+   "fieldtype": "Table",
+   "label": "Records",
+   "options": "Daily Record Table",
+   "reqd": 1
+  },
+  {
+   "default": "0.00",
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expenses_tab",
+   "fieldtype": "Tab Break",
+   "label": "Expenses"
+  },
+  {
+   "fieldname": "expenses",
+   "fieldtype": "Table",
+   "label": "Expenses",
+   "options": "Daily Expenses Table"
+  },
+  {
+   "fieldname": "section_break_ujeq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_expenses",
+   "fieldtype": "Currency",
+   "label": "Total Expenses",
+   "read_only": 1
+  },
+  {
+   "default": "0.00",
+   "fieldname": "remaining_balance",
+   "fieldtype": "Currency",
+   "label": "Remaining Balance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jvni",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0.00",
+   "fieldname": "total_cash",
+   "fieldtype": "Currency",
+   "label": "Total Cash",
+   "read_only": 1
+  },
+  {
+   "default": "0.00",
+   "fieldname": "total_wave",
+   "fieldtype": "Currency",
+   "label": "Total Wave",
+   "read_only": 1
+  },
+  {
+   "default": "0.00",
+   "fieldname": "total_aps",
+   "fieldtype": "Currency",
+   "label": "Total APS",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cvub",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "machine",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Machine",
+   "options": "\nMachine 1\nMachine 2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_kwzh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Daily Record Sales",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-08-19 21:11:48.717345",
+ "modified_by": "Administrator",
+ "module": "Njie",
+ "name": "Daily Record Sales",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Daily Sales Recorder",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -5,7 +5,7 @@
    "label": "Deposit"
   }
  ],
- "content": "[{\"id\":\"R9kLm3R8Vh\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Deposit\",\"col\":12}},{\"id\":\"Y7uDGr6hKc\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (Today)\",\"col\":3}},{\"id\":\"-gLzdujHrB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (Today)\",\"col\":3}},{\"id\":\"f7XjxN7oCC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (This Month)\",\"col\":3}},{\"id\":\"3t9-W8WRqi\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (This Month)\",\"col\":3}},{\"id\":\"LgX9Rcru3i\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"F-o6JIgGEz\",\"type\":\"card\",\"data\":{\"card_name\":\"Credit and Payments\",\"col\":3}},{\"id\":\"7MOwCgAmAH\",\"type\":\"card\",\"data\":{\"card_name\":\"Bank Master\",\"col\":3}},{\"id\":\"44fvLoMpEn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transactions Report\",\"col\":3}},{\"id\":\"i-WzGCJ_d3\",\"type\":\"card\",\"data\":{\"card_name\":\"News & Products\",\"col\":3}}]",
+ "content": "[{\"id\":\"R9kLm3R8Vh\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Deposit\",\"col\":12}},{\"id\":\"Y7uDGr6hKc\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (Today)\",\"col\":3}},{\"id\":\"-gLzdujHrB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (Today)\",\"col\":3}},{\"id\":\"f7XjxN7oCC\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Deposits (This Month)\",\"col\":3}},{\"id\":\"3t9-W8WRqi\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Withdrawal (This Month)\",\"col\":3}},{\"id\":\"LgX9Rcru3i\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"F-o6JIgGEz\",\"type\":\"card\",\"data\":{\"card_name\":\"Credit and Payments\",\"col\":3}},{\"id\":\"7MOwCgAmAH\",\"type\":\"card\",\"data\":{\"card_name\":\"Bank Master\",\"col\":3}},{\"id\":\"44fvLoMpEn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transactions Report\",\"col\":3}},{\"id\":\"i-WzGCJ_d3\",\"type\":\"card\",\"data\":{\"card_name\":\"News & Products\",\"col\":3}},{\"id\":\"p6DVIxU-UD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily Record Sales\",\"col\":3}}]",
  "creation": "2024-02-27 13:34:16.912598",
  "custom_blocks": [],
  "docstatus": 0,
@@ -125,7 +125,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-02-09 16:17:57.610169",
+ "modified": "2025-08-19 23:23:31.240412",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "School and Banking",
@@ -151,8 +151,18 @@
  "parent_page": "",
  "public": 1,
  "quick_lists": [],
- "roles": [],
- "sequence_id": 1.0,
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Sales User"
+  }
+ ],
+ "sequence_id": 4.0,
  "shortcuts": [
   {
    "color": "Grey",
@@ -160,6 +170,14 @@
    "label": "Transactions Report",
    "link_to": "Transaction",
    "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Daily Record Sales",
+   "link_to": "Daily Record Sales",
+   "stats_filter": "[]",
+   "type": "DocType"
   }
  ],
  "title": "School and Banking"
