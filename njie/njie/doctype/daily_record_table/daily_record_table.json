@@ -8,7 +8,8 @@
  "field_order": [
   "amount",
   "payment_method",
-  "time"
+  "time",
+  "transactions_id"
  ],
  "fields": [
   {
@@ -32,12 +33,18 @@
    "label": "Time",
    "options": "now",
    "read_only": 1
+  },
+  {
+   "fieldname": "transactions_id",
+   "fieldtype": "Data",
+   "label": "Transactions ID",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-10-29 02:01:53.113701",
+ "modified": "2025-11-21 18:19:33.433596",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Daily Record Table",

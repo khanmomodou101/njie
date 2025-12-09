@@ -113,7 +113,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Machine",
-   "options": "\nMachine 1\nMachine 2",
+   "options": "\nMachine 1\nMachine 2\nTerminal 1",
    "reqd": 1
   },
   {
@@ -134,7 +134,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-19 21:11:48.717345",
+ "modified": "2025-11-21 17:49:12.902129",
  "modified_by": "Administrator",
  "module": "Njie",
  "name": "Daily Record Sales",
