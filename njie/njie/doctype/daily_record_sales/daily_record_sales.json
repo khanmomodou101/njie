@@ -8,6 +8,7 @@
  "field_order": [
   "section_break_gtng",
   "date",
+  "cashier",
   "column_break_cvub",
   "machine",
   "section_break_kwzh",
@@ -35,6 +36,11 @@
    "in_list_view": 1,
    "label": "Date",
    "reqd": 1
+  },
+  {
+   "fieldname": "cashier",
+   "fieldtype": "Data",
+   "label": "Cashier"
   },
   {
    "fieldname": "records",

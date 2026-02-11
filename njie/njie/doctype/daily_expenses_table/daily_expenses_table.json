@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "description",
   "remark",
   "amount"
  ],
@@ -21,6 +22,12 @@
    "fieldname": "remark",
    "fieldtype": "Data",
    "label": "Remark"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
