@@ -1,0 +1,86 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"ds_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Daily Sales</span>\",\"col\":12}},{\"id\":\"ds_shortcut_1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily Record Sales\",\"col\":3}},{\"id\":\"ds_spacer_1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ds_header_2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Reports</span>\",\"col\":12}},{\"id\":\"ds_shortcut_2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily Sales Summary\",\"col\":3}},{\"id\":\"ds_shortcut_3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales by Payment Method\",\"col\":3}},{\"id\":\"ds_shortcut_4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Machine Performance\",\"col\":3}},{\"id\":\"ds_shortcut_5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cashier Performance\",\"col\":3}},{\"id\":\"ds_shortcut_6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Expenses Analysis\",\"col\":3}},{\"id\":\"ds_shortcut_7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Monthly Sales Trend\",\"col\":3}}]",
+ "creation": "2026-03-18 00:00:00.000000",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "chart-bar",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Daily Sales",
+ "links": [],
+ "modified": "2026-03-18 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Njie",
+ "name": "Daily Sales",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Daily Sales Recorder"
+  }
+ ],
+ "sequence_id": 5.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Daily Record Sales",
+   "link_to": "Daily Record Sales",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "",
+   "label": "Daily Sales Summary",
+   "link_to": "Daily Sales Summary",
+   "type": "Report"
+  },
+  {
+   "color": "Green",
+   "doc_view": "",
+   "label": "Sales by Payment Method",
+   "link_to": "Sales by Payment Method",
+   "type": "Report"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "",
+   "label": "Machine Performance",
+   "link_to": "Machine Performance",
+   "type": "Report"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "",
+   "label": "Cashier Performance",
+   "link_to": "Cashier Performance",
+   "type": "Report"
+  },
+  {
+   "color": "Red",
+   "doc_view": "",
+   "label": "Expenses Analysis",
+   "link_to": "Expenses Analysis",
+   "type": "Report"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "",
+   "label": "Monthly Sales Trend",
+   "link_to": "Monthly Sales Trend",
+   "type": "Report"
+  }
+ ],
+ "title": "Daily Sales"
+}
