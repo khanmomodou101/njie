@@ -24,7 +24,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Payment Method",
-   "options": "Cash\nWave\nAPS"
+   "options": "Cash\nWave\nAPS\nQMoney"
   },
   {
    "fieldname": "time",

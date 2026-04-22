@@ -21,6 +21,7 @@
   "total_cash",
   "total_wave",
   "total_aps",
+  "total_qmoney",
   "expenses_tab",
   "expenses",
   "amended_from"
@@ -107,6 +108,13 @@
    "fieldname": "total_aps",
    "fieldtype": "Currency",
    "label": "Total APS",
+   "read_only": 1
+  },
+  {
+   "default": "0.00",
+   "fieldname": "total_qmoney",
+   "fieldtype": "Currency",
+   "label": "Total QMoney",
    "read_only": 1
   },
   {

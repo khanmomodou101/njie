@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 function calculate_totals(frm) {
-	let total = 0, total_cash = 0, total_wave = 0, total_aps = 0, total_expenses = 0;
+	let total = 0, total_cash = 0, total_wave = 0, total_aps = 0, total_qmoney = 0, total_expenses = 0;
 
 	(frm.doc.records || []).forEach(row => {
 		let amt = flt(row.amount);
@@ -10,6 +10,7 @@ function calculate_totals(frm) {
 		if (row.payment_method === "Cash") total_cash += amt;
 		else if (row.payment_method === "Wave") total_wave += amt;
 		else if (row.payment_method === "APS") total_aps += amt;
+		else if (row.payment_method === "QMoney") total_qmoney += amt;
 	});
 
 	(frm.doc.expenses || []).forEach(row => {
@@ -20,6 +21,7 @@ function calculate_totals(frm) {
 	frm.set_value("total_cash", total_cash);
 	frm.set_value("total_wave", total_wave);
 	frm.set_value("total_aps", total_aps);
+	frm.set_value("total_qmoney", total_qmoney);
 	frm.set_value("total_expenses", total_expenses);
 	frm.set_value("remaining_balance", total - total_expenses);
 }

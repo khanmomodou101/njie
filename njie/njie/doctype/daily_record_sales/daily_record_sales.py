@@ -14,6 +14,7 @@ class DailyRecordSales(Document):
 		self.total_cash = 0
 		self.total_wave = 0
 		self.total_aps = 0
+		self.total_qmoney = 0
 		self.total_expenses = 0
 
 		for row in self.records:
@@ -26,6 +27,8 @@ class DailyRecordSales(Document):
 				self.total_wave += amt
 			elif row.payment_method == "APS":
 				self.total_aps += amt
+			elif row.payment_method == "QMoney":
+				self.total_qmoney += amt
 
 		for row in self.expenses:
 			self.total_expenses += flt(row.amount)
