@@ -23,7 +23,7 @@ function calculate_totals(frm) {
 	frm.set_value("total_aps", total_aps);
 	frm.set_value("total_qmoney", total_qmoney);
 	frm.set_value("total_expenses", total_expenses);
-	frm.set_value("remaining_balance", total - total_expenses);
+	frm.set_value("remaining_balance", total_cash - total_expenses - total_wave - total_qmoney - total_aps);
 }
 
 frappe.ui.form.on("Daily Record Sales", {

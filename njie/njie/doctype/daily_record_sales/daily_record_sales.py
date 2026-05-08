@@ -33,4 +33,4 @@ class DailyRecordSales(Document):
 		for row in self.expenses:
 			self.total_expenses += flt(row.amount)
 
-		self.remaining_balance = self.total - self.total_expenses
+		self.remaining_balance = self.total_cash - self.total_expenses - self.total_wave - self.total_qmoney - self.total_aps
